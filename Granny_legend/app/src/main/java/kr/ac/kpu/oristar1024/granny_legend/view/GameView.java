@@ -59,9 +59,13 @@ public class GameView extends View {
         return true;
     }
 
+    public void update(){
+        player.update();
+    }
     @Override
     protected void onDraw(Canvas canvas) {
         player.draw(canvas);
+
     }
 }
 

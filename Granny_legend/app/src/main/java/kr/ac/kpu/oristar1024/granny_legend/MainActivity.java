@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

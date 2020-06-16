@@ -17,17 +17,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gameView = findViewById(R.id.gameView);
-        postUpdate();
+  //      postUpdate();
     }
 
-    private void postUpdate() {
-        gameView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                gameView.update();
-                gameView.invalidate();
-                postUpdate();
-            }
-        }, GAMEVIEW_UPDATE_INTERVAL_MSEC);
-    }
+   // private void postUpdate() {
+    //    gameView.postDelayed(new Runnable() {
+    //        @Override
+    //        public void run() {
+     //           gameView.update();
+     //           gameView.invalidate();
+     //           postUpdate();
+     //       }
+     //   }, GAMEVIEW_UPDATE_INTERVAL_MSEC);
+   // }
 }

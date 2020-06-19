@@ -6,28 +6,25 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Debug;
-import android.util.Log;
-import android.view.ViewDebug;
-
-import kr.ac.kpu.oristar1024.granny_legend.MainActivity;
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
-public class Monster_normal implements GameObject {
-
-    private final static String TAG = MainActivity.class.getSimpleName();
+public class Monster implements GameObject {
     private float dx, dy;
     private float x, y;
     private float speed;
-    private int hp;
+    public int hp;
     private int frame;
     private int count;
+    private float birthTime;
+    public float hitDelay = 1.f / 6;
+    private float delayTime = 0.f;
     public Rect bounding_box;
     private Rect srcRect;
 
+
     private Bitmap bitmap;
 
-    public Monster_normal(Resources res, int x, int y, float dx, float dy, int hp){
+    public Monster(Resources res, int x, int y, float dx, float dy, int hp){
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_normal);
         frame = 0;
@@ -40,8 +37,9 @@ public class Monster_normal implements GameObject {
         float dist = (float)(Math.sqrt(dx * dx + dy * dy));
         this.dx = this.dx / dist;
         this.dy = this.dy / dist;
-        speed = 20;
+        speed = 600;
         this.hp = hp;
+        birthTime = 0.f;
     }
 
     public void updateBB(){
@@ -62,6 +60,8 @@ public class Monster_normal implements GameObject {
     }
 
     public void updatedir(int screen_width, int screen_height){
+        if(birthTime < 2.0f)
+            return;
         if( bounding_box.left < 0) {
             dx = -dx;
             x = 101;
@@ -84,10 +84,19 @@ public class Monster_normal implements GameObject {
         }
     }
 
+    public void hitByWeapon(int damage){
+        if(delayTime > hitDelay) {
+            hp = hp - damage;
+            delayTime = 0.f;
+        }
+    }
+
     @Override
-    public void update() {
-        x = x + dx * speed;
-        y = y + dy * speed;
+    public void update(float eTime) {
+        delayTime += eTime;
+        birthTime += eTime;
+        x = x + dx * speed * eTime;
+        y = y + dy * speed * eTime;
         updateBB();
     }
 
@@ -101,6 +110,19 @@ public class Monster_normal implements GameObject {
         canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
         canvas.drawText(" "+hp, x-70, y-40, BBpaint);
         updateFrame();
+    }
+
+    @Override
+    public boolean collisionCheck(Rect other) {
+        if(bounding_box.left > other.right)
+            return false;
+        if (bounding_box.right < other.left)
+            return false;
+        if (bounding_box.top > other.bottom)
+            return false;
+        if (bounding_box.bottom < other.top)
+            return false;
+        return true;
     }
 
 }

@@ -17,11 +17,8 @@ public class Player implements GameObject{
     private float x, y;
     private float dx, dy;
     private float range;
-    private ArrayList<Weapon> weapons;
-    private int frame;
-    private int count;
+    public ArrayList<Weapon> weapons;
     public Rect bounding_box;
-    private Rect srcRect;
 
 
     public Player(Resources res){
@@ -30,8 +27,7 @@ public class Player implements GameObject{
         dx = 0;
         dy = 0;
         range = 200;
-        bounding_box = new Rect(400, 400, 600, 600);
-        srcRect = new Rect(0, 0, 160, 160);
+        bounding_box = new Rect(460, 460, 540, 540);
 
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.character);
@@ -45,23 +41,10 @@ public class Player implements GameObject{
     }
 
     public void updateBB(){
-        bounding_box.left = (int)(x-100);
-        bounding_box.right = (int)(x+100);
-        bounding_box.bottom = (int)(y+100);
-        bounding_box.top = (int)(y-100);
-    }
-
-    public void updateFrame(){
-        count++;
-        if(count == 15){
-            frame = (frame+1)%2;
-        }
-        if(count == 20){
-            frame = (frame+1)%2;
-            count = 0;
-        }
-        srcRect.left = frame * 160;
-        srcRect.right = srcRect.left + 160;
+        bounding_box.left = (int)(x-40);
+        bounding_box.right = (int)(x+40);
+        bounding_box.bottom = (int)(y+40);
+        bounding_box.top = (int)(y-40);
     }
 
     public void move(float dx, float dy){
@@ -71,7 +54,7 @@ public class Player implements GameObject{
 
 
     @Override
-    public void update() {
+    public void update(float eTime) {
         x += dx;
         y += dy;
         dx = 0;
@@ -79,7 +62,7 @@ public class Player implements GameObject{
         updateBB();
         for(Weapon w : weapons){
             w.setLocation(x, y, range);
-            w.update();
+            w.update(eTime);
         }
 
     }
@@ -88,10 +71,22 @@ public class Player implements GameObject{
     public void draw(Canvas canvas) {
         Paint boxpaint = new Paint();
         canvas.drawRect(bounding_box, boxpaint);
-        canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
-        updateFrame();
+        canvas.drawBitmap(bitmap, x-75, y-75, null);
         for(Weapon w : weapons){
             w.draw(canvas);
         }
+    }
+
+    @Override
+    public boolean collisionCheck(Rect other) {
+        if (bounding_box.left > other.right)
+            return false;
+        if (bounding_box.right < other.left)
+            return false;
+        if (bounding_box.top > other.bottom)
+            return false;
+        if (bounding_box.bottom < other.top)
+            return false;
+        return true;
     }
 }

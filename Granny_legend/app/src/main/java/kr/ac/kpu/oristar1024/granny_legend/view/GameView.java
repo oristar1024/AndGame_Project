@@ -4,20 +4,21 @@ import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 import kr.ac.kpu.oristar1024.granny_legend.MainActivity;
-import kr.ac.kpu.oristar1024.granny_legend.classes.Monster_normal;
+import kr.ac.kpu.oristar1024.granny_legend.classes.Monster;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
+import kr.ac.kpu.oristar1024.granny_legend.classes.Weapon;
 
 public class GameView extends View {
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -26,10 +27,12 @@ public class GameView extends View {
     private float tmpx;
     private float tmpy;
     private Player player;
-    private Monster_normal monster1;
-    private Monster_normal monster2;
+    private ArrayList<Monster> monsters;
+    private ArrayList<Monster> trash_monsters;
     int screen_width;
     int screen_height;
+    private float timeDiff;
+    private float frameTime;
 
     public GameView(Context context){
         super(context);
@@ -64,9 +67,10 @@ public class GameView extends View {
         screen_width = size.x;
         screen_height = size.y;
         player = new Player(getResources());
-
-        monster1 = new Monster_normal(getResources(), 500, 500, 0,1, 2000);
-        monster2 = new Monster_normal(getResources(),350, 300, 1, 1, 2000);
+        trash_monsters = new ArrayList<>();
+        monsters = new ArrayList<>();
+        monsters.add(new Monster(getResources(), 300, 0, 0,1, 300));
+        monsters.add(new Monster(getResources(),500, 0, 0, 1, 300));
 
         postFrameCallback();
     }
@@ -94,19 +98,38 @@ public class GameView extends View {
         return true;
     }
 
-    public void update(long frameTimeNanos){
 
-        player.update();
-        monster1.update();
-        monster2.update();
-        monster1.updatedir(screen_width, screen_height);
-        monster2.updatedir(screen_width, screen_height);
+    public void update(long frameTimeNanos){
+        float curTime = frameTimeNanos / 1000000000.0f;
+        if(frameTime == 0){
+            frameTime = curTime;
+            return;
+        }
+        timeDiff = curTime - frameTime;
+        frameTime = curTime;
+
+        player.update(timeDiff);
+        for(Monster m : monsters){
+            m.update(timeDiff);
+            m.updatedir(screen_width, screen_height);
+            if(player.collisionCheck(m.bounding_box))
+                Log.d(TAG, "dead!");
+            for(Weapon w : player.weapons){
+                if(m.collisionCheck(w.bounding_box)){
+                    m.hitByWeapon(w.damage);
+                    if(m.hp <= 0.f)
+                        trash_monsters.add(m);
+                }
+            }
+        }
+        monsters.removeAll(trash_monsters);
+        trash_monsters.clear();
     }
     @Override
     protected void onDraw(Canvas canvas) {
         player.draw(canvas);
-        monster1.draw(canvas);
-        monster2.draw(canvas);
+        for(Monster m : monsters)
+            m.draw(canvas);
     }
 }
 

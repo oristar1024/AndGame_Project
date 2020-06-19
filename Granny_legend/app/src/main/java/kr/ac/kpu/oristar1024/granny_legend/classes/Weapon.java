@@ -14,8 +14,7 @@ public class Weapon implements GameObject {
     private float angle;
     private Bitmap bitmap;
     public Rect bounding_box;
-    private int damage;
-    private Rect srcRect;
+    public int damage;
 
 
     public Weapon(Resources res, float cx, float cy, float angle, float range){
@@ -24,7 +23,6 @@ public class Weapon implements GameObject {
         bounding_box = new Rect((int)x-100, (int)y-50, (int)x+100, (int)y+50);
         setLocation(cx, cy, range);
         this.angle = angle;
-        srcRect = new Rect(0, 0, 200, 100);
         damage = 50;
     }
 
@@ -41,8 +39,8 @@ public class Weapon implements GameObject {
     }
 
     @Override
-    public void update() {
-        angle += 10;
+    public void update(float eTime) {
+        angle += 360 * eTime;
     }
 
     @Override
@@ -50,5 +48,18 @@ public class Weapon implements GameObject {
         Paint bbPaint = new Paint();
         canvas.drawRect(bounding_box, bbPaint);
         canvas.drawBitmap(bitmap, null, bounding_box, null);
+    }
+
+    @Override
+    public boolean collisionCheck(Rect other) {
+        if(bounding_box.left > other.right)
+            return false;
+        if (bounding_box.right < other.left)
+            return false;
+        if (bounding_box.top < other.bottom)
+            return false;
+        if (bounding_box.bottom > other.top)
+            return false;
+        return true;
     }
 }

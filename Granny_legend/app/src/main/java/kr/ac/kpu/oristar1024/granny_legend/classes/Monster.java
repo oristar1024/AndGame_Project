@@ -16,8 +16,11 @@ public class Monster implements GameObject {
     private int frame;
     private int count;
     private float birthTime;
-    public float hitDelay = 1.f / 6;
+    private float hitDelay = 1.f / 6;
     private float delayTime = 0.f;
+    private float rotSpeedItemDurationTime = 5.0f;
+    private float rotSpeedItemTime = 0.f;
+    private boolean rotSpeedItemOn = false;
     public Rect bounding_box;
     private Rect srcRect;
 
@@ -42,14 +45,14 @@ public class Monster implements GameObject {
         birthTime = 0.f;
     }
 
-    public void updateBB(){
+    private void updateBB(){
         bounding_box.left = (int)(x-100);
         bounding_box.right = (int)(x+100);
         bounding_box.bottom = (int)(y+100);
         bounding_box.top = (int)(y-100);
     }
 
-    public void updateFrame(){
+    private void updateFrame(){
         count++;
         if(count == 10){
             frame = (frame+1)%2;
@@ -91,10 +94,23 @@ public class Monster implements GameObject {
         }
     }
 
+    public void rotSpeedItem(){
+        hitDelay = hitDelay / 2;
+        rotSpeedItemOn = true;
+    }
+
     @Override
     public void update(float eTime) {
         delayTime += eTime;
         birthTime += eTime;
+        if(rotSpeedItemOn){
+            rotSpeedItemTime += eTime;
+            if(rotSpeedItemTime > rotSpeedItemDurationTime){
+                hitDelay = hitDelay * 2;
+                rotSpeedItemTime = 0;
+                rotSpeedItemOn = false;
+            }
+        }
         x = x + dx * speed * eTime;
         y = y + dy * speed * eTime;
         updateBB();

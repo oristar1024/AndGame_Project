@@ -19,6 +19,10 @@ public class Player implements GameObject{
     private float range;
     public ArrayList<Weapon> weapons;
     public Rect bounding_box;
+    private float itemDurationTime = 5.0f;
+    private float itemTime = 0.f;
+    private boolean itemOn = false;
+    public boolean shieldItemOn = false;
 
 
     public Player(Resources res){
@@ -40,7 +44,7 @@ public class Player implements GameObject{
         weapons.add(new Weapon(res, x, y, 300, range));
     }
 
-    public void updateBB(){
+    private void updateBB(){
         bounding_box.left = (int)(x-40);
         bounding_box.right = (int)(x+40);
         bounding_box.bottom = (int)(y+40);
@@ -52,6 +56,28 @@ public class Player implements GameObject{
         this.dy += dy;
     }
 
+    public void rotSpeedItem(){
+        if(!itemOn){
+            itemOn = true;
+            for(Weapon w : weapons)
+                w.rotSpeed = w.rotSpeed * 2;
+        }
+    }
+
+    public void shieldItem(){
+        if(!itemOn){
+            itemOn = true;
+            shieldItemOn = true;
+        }
+    }
+
+    public void rangeItem(){
+        if(!itemOn){
+            itemOn = true;
+            range = 300;
+        }
+    }
+
 
     @Override
     public void update(float eTime) {
@@ -60,11 +86,25 @@ public class Player implements GameObject{
         dx = 0;
         dy = 0;
         updateBB();
+        if(itemOn){
+            itemTime += eTime;
+            if(itemTime > itemDurationTime)
+                itemEnd();
+        }
         for(Weapon w : weapons){
             w.setLocation(x, y, range);
             w.update(eTime);
         }
 
+    }
+
+    private void itemEnd() {
+        itemOn = false;
+        itemTime = 0.f;
+        for (Weapon w : weapons)
+            w.rotSpeed = 360;
+        shieldItemOn = false;
+        range = 200;
     }
 
     @Override

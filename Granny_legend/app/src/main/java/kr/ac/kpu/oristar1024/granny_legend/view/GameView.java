@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import kr.ac.kpu.oristar1024.granny_legend.MainActivity;
+import kr.ac.kpu.oristar1024.granny_legend.classes.Item;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Monster;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Weapon;
@@ -29,6 +30,9 @@ public class GameView extends View {
     private Player player;
     private ArrayList<Monster> monsters;
     private ArrayList<Monster> trash_monsters;
+    private ArrayList<Item> items;
+    private ArrayList<Item> trash_items;
+
     int screen_width;
     int screen_height;
     private float timeDiff;
@@ -66,11 +70,17 @@ public class GameView extends View {
         wm.getDefaultDisplay().getSize(size);
         screen_width = size.x;
         screen_height = size.y;
+
         player = new Player(getResources());
+        items = new ArrayList<>();
+        trash_items = new ArrayList<>();
+        items.add(new Item(getResources(), 100, 100, 1, 1));
+        items.add(new Item(getResources(), 500, 500, -1, -1));
+
         trash_monsters = new ArrayList<>();
         monsters = new ArrayList<>();
-        monsters.add(new Monster(getResources(), 300, 0, 0,1, 300));
-        monsters.add(new Monster(getResources(),500, 0, 0, 1, 300));
+        monsters.add(new Monster(getResources(), 300, 0, 0,1, 3000));
+        monsters.add(new Monster(getResources(),500, 0, 0, 1, 3000));
 
         postFrameCallback();
     }
@@ -109,10 +119,27 @@ public class GameView extends View {
         frameTime = curTime;
 
         player.update(timeDiff);
+
+        for(Item i : items){
+            i.update(timeDiff);
+            i.updatedir(screen_width, screen_height);
+            if(player.collisionCheck(i.bounding_box)){
+                if(i.type == 0){
+                    player.rotSpeedItem();
+                    for(Monster m : monsters)
+                        m.rotSpeedItem();
+                }
+                else if(i.type == 1)
+                    player.shieldItem();
+                else if(i.type == 2)
+                    player.rangeItem();
+                trash_items.add(i);
+            }
+        }
         for(Monster m : monsters){
             m.update(timeDiff);
             m.updatedir(screen_width, screen_height);
-            if(player.collisionCheck(m.bounding_box))
+            if(player.collisionCheck(m.bounding_box) && !player.shieldItemOn)
                 Log.d(TAG, "dead!");
             for(Weapon w : player.weapons){
                 if(m.collisionCheck(w.bounding_box)){
@@ -123,11 +150,15 @@ public class GameView extends View {
             }
         }
         monsters.removeAll(trash_monsters);
+        items.removeAll(trash_items);
         trash_monsters.clear();
+        trash_items.clear();
     }
     @Override
     protected void onDraw(Canvas canvas) {
         player.draw(canvas);
+        for(Item i : items)
+            i.draw(canvas);
         for(Monster m : monsters)
             m.draw(canvas);
     }

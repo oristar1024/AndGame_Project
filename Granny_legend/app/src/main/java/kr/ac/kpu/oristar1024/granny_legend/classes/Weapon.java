@@ -15,24 +15,26 @@ public class Weapon implements GameObject {
     private Bitmap bitmap;
     public Rect bounding_box;
     public int damage;
+    float rotSpeed;
 
 
-    public Weapon(Resources res, float cx, float cy, float angle, float range){
+    Weapon(Resources res, float cx, float cy, float angle, float range){
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.weapon);
         bounding_box = new Rect((int)x-100, (int)y-50, (int)x+100, (int)y+50);
         setLocation(cx, cy, range);
         this.angle = angle;
         damage = 50;
+        rotSpeed = 360;
     }
 
-    public void setBB(){
+    private void setBB(){
         bounding_box.left = (int)x - 100;
         bounding_box.right = (int)x + 100;
         bounding_box.top = (int)y -50;
         bounding_box.bottom = (int)y +50;
     }
-    public void setLocation(float cx, float cy, float range){
+    void setLocation(float cx, float cy, float range){
         x = cx + (float) (range * Math.cos(Math.toRadians(angle)));
         y = cy + (float) (range * Math.sin(Math.toRadians(angle)));
         setBB();
@@ -40,7 +42,7 @@ public class Weapon implements GameObject {
 
     @Override
     public void update(float eTime) {
-        angle += 360 * eTime;
+        angle += rotSpeed * eTime;
     }
 
     @Override

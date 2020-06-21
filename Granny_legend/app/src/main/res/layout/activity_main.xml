@@ -93,6 +93,7 @@
 
     <ImageButton
         android:id="@+id/buttonStage1"
+        android:onClick="chooseStage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/locked_stage"
@@ -106,6 +107,7 @@
 
     <ImageButton
         android:id="@+id/buttonStage2"
+        android:onClick="chooseStage"
         android:layout_width="50dp"
         android:layout_height="50dp"
 
@@ -119,6 +121,7 @@
 
     <ImageButton
         android:id="@+id/buttonStage3"
+        android:onClick="chooseStage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/locked_stage"
@@ -131,6 +134,7 @@
 
     <ImageButton
         android:id="@+id/buttonStage4"
+        android:onClick="chooseStage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/locked_stage"
@@ -143,6 +147,7 @@
 
     <ImageButton
         android:id="@+id/buttonStage5"
+        android:onClick="chooseStage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/locked_stage"

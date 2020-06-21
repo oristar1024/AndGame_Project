@@ -46,7 +46,7 @@ public class Generator {
                 monsterWaveTime -= 2;
                 monsterWave++;
             }
-            if(monsterWaveTime > 5){
+            if(monsterWaveTime > 7){
                 if(monsterWave == 1){
                     monsters.add(new Monster(res, 340, 1900, 0, -1, 2000));
                     monsters.add(new Monster(res, 540, 1900, 0, -1, 2000));
@@ -73,13 +73,101 @@ public class Generator {
                     monsters.add(new Monster(res, 740, 1900, 0, -1, 2000));
                 }
                 monsterWave++;
-                monsterWaveTime -= 5;
+                monsterWaveTime -= 7;
             }
         }
 
         else if(stage == 2){
-
+            if(monsterWaveTime > 2 && monsterWave == 0) {
+                monsters.add(new Monster_Charge(res, 140, -100, 0, 1, 2000));
+                monsters.add(new Monster_Charge(res, 940, -100, 0, 1, 2000));
+                monsterWaveTime -= 2;
+                monsterWave++;
+            }
+            if(monsterWaveTime > 7){
+                if(monsterWave == 1){
+                    monsters.add(new Monster_Charge(res, 340, 1900, 0, -1, 2000));
+                    monsters.add(new Monster_Charge(res, 540, 1900, 0, -1, 2000));
+                    monsters.add(new Monster_Charge(res, 740, 1900, 0, -1, 2000));
+                    monsterWaveTime -= 2;
+                }
+                else if(monsterWave == 2){
+                    monsters.add(new Monster_Charge(res, 140, 1900, 0, -1, 2000));
+                    monsters.add(new Monster_Charge(res, 940, 1900, 0, -1, 2000));
+                }
+                else if(monsterWave == 3){
+                    monsters.add(new Monster_Charge(res, 340, -100, 0, 1, 2000));
+                    monsters.add(new Monster_Charge(res, 540, -100, 0, 1, 2000));
+                    monsters.add(new Monster_Charge(res, 740, -100, 0, 1, 2000));
+                    monsterWaveTime -= 4;
+                }
+                else if(monsterWave == 4){
+                    monsters.add(new Monster_Charge(res, 140, -100, 0, 1, 2000));
+                    monsters.add(new Monster_Charge(res, 940, -100, 0, 1, 2000));
+                }
+                else if(monsterWave == 5){
+                    monsters.add(new Monster_Charge(res, 340, 1900, 0, -1, 2000));
+                    monsters.add(new Monster_Charge(res, 540, 1900, 0, -1, 2000));
+                    monsters.add(new Monster_Charge(res, 740, 1900, 0, -1, 2000));
+                }
+                monsterWave++;
+                monsterWaveTime -= 7;
+            }
         }
+
+        else if(stage == 3){
+            if(monsterWaveTime > 2 && monsterWave == 0) {
+                monsters.add(new Monster_Parent(res, 340, -100, 0, 1, 2100));
+                monsters.add(new Monster_Parent(res, 740, -100, 0, 1, 2100));
+                monsterWaveTime -= 2;
+                monsterWave++;
+            }
+            if(monsterWaveTime > 7){
+                if(monsterWave == 1){
+                    monsters.add(new Monster_Parent(res, -100, 600, 1, 0, 2100));
+                    monsters.add(new Monster_Parent(res, -100, 1000, 1, 0, 2100));
+                    monsters.add(new Monster_Parent(res, -100, 1400, 1, 0, 2100));
+                    monsterWaveTime -= 2;
+                }
+                else if(monsterWave == 2){
+                    monsters.add(new Monster_Parent(res, -100, -100, 1, 1, 2100));
+                    monsters.add(new Monster_Parent(res, -100, 200, 1, 1, 2100));
+                }
+                else if(monsterWave == 3){
+                    monsters.add(new Monster_Parent(res, 1180, -100, -1, 1, 2100));
+                    monsters.add(new Monster_Parent(res, 1180, 200, -1, 1, 2100));
+                    monsterWaveTime -= 4;
+                }
+                else if(monsterWave == 4){
+                    monsters.add(new Monster_Parent(res, 1180, 1900, -1, -3, 2100));
+                    monsters.add(new Monster_Parent(res, 1180, 1600, -1, -3, 2100));
+                }
+                else if(monsterWave == 5){
+                    monsters.add(new Monster_Parent(res, 1180, 400, -1, 0, 2100));
+                    monsters.add(new Monster_Parent(res, 1180, 1000, -1, 0, 2100));
+                    monsters.add(new Monster_Parent(res, 1180, 1600, -1, 0, 2100));
+                }
+                monsterWave++;
+                monsterWaveTime -= 7;
+            }
+        }
+        return monsters;
+    }
+
+    public ArrayList<Monster> generateChild(Monster m){
+        monsters.clear();
+        float dx = random.nextInt(10);
+        float dy = random.nextInt(10);
+        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+
+        dx = random.nextInt(10);
+        dy = random.nextInt(10);
+        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+
+        dx = random.nextInt(10);
+        dy = random.nextInt(10);
+        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+
         return monsters;
     }
 

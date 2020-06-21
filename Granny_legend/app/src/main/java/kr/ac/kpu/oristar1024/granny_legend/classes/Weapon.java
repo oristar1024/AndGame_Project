@@ -18,13 +18,13 @@ public class Weapon implements GameObject {
     float rotSpeed;
 
 
-    Weapon(Resources res, float cx, float cy, float angle, float range){
+    Weapon(Resources res, float cx, float cy, float angle, float range, int level){
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.weapon);
         bounding_box = new Rect((int)x-100, (int)y-50, (int)x+100, (int)y+50);
         setLocation(cx, cy, range);
         this.angle = angle;
-        damage = 50;
+        damage = 40+level*5;
         rotSpeed = 360;
     }
 

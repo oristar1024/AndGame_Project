@@ -9,25 +9,28 @@ import android.graphics.Rect;
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
 public class Monster implements GameObject {
-    private float dx, dy;
-    private float x, y;
-    private float speed;
+    float dx;
+    float dy;
+    float x;
+    float y;
+    float speed;
     public int hp;
     private int frame;
     private int count;
-    private float birthTime;
-    private float hitDelay = 1.f / 6;
-    private float delayTime = 0.f;
-    private float rotSpeedItemDurationTime = 5.0f;
-    private float rotSpeedItemTime = 0.f;
-    private boolean rotSpeedItemOn = false;
+    float birthTime;
+    float hitDelay = 1.f / 6;
+    float delayTime = 0.f;
+    float rotSpeedItemDurationTime = 5.0f;
+    float rotSpeedItemTime = 0.f;
+    boolean rotSpeedItemOn = false;
     public Rect bounding_box;
     private Rect srcRect;
+    public int type;
 
 
-    private Bitmap bitmap;
+    Bitmap bitmap;
 
-    public Monster(Resources res, int x, int y, float dx, float dy, int hp){
+    Monster(Resources res, int x, int y, float dx, float dy, int hp){
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_normal);
         frame = 0;
@@ -40,12 +43,13 @@ public class Monster implements GameObject {
         float dist = (float)(Math.sqrt(dx * dx + dy * dy));
         this.dx = this.dx / dist;
         this.dy = this.dy / dist;
-        speed = 600;
+        speed = 400;
         this.hp = hp;
         birthTime = 0.f;
+        type = 0;
     }
 
-    private void updateBB(){
+    void updateBB(){
         bounding_box.left = (int)(x-100);
         bounding_box.right = (int)(x+100);
         bounding_box.bottom = (int)(y+100);
@@ -118,13 +122,11 @@ public class Monster implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint BBpaint = new Paint();
         Paint txtPaint = new Paint();
-        txtPaint.setColor(255);
-        canvas.drawRect(bounding_box, BBpaint);
-        BBpaint.setTextSize(50);
+        txtPaint.setColor(0xFFCC0000);
+        txtPaint.setTextSize(60);
         canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
-        canvas.drawText(" "+hp, x-70, y-40, BBpaint);
+        canvas.drawText(" "+hp, x-80, y-40, txtPaint);
         updateFrame();
     }
 

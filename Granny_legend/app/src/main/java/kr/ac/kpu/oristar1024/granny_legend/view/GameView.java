@@ -32,6 +32,7 @@ public class GameView extends View {
     private Player player;
     private ArrayList<Monster> monsters;
     private ArrayList<Monster> trash_monsters;
+    private ArrayList<Monster> child_monsters;
     private ArrayList<Item> items;
     private ArrayList<Item> trash_items;
     private Generator generator;
@@ -76,16 +77,19 @@ public class GameView extends View {
         screen_width = size.x;
         screen_height = size.y;
 
-        player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2);
+        pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
+        int weaponLevel = pref.getInt("level", 0);
+        int stageLevel = pref.getInt("selection", 0);
+
+        player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2, weaponLevel);
         items = new ArrayList<>();
         trash_items = new ArrayList<>();
         trash_monsters = new ArrayList<>();
+        child_monsters = new ArrayList<>();
         monsters = new ArrayList<>();
-        generator = new Generator(getResources(), 1);
+        generator = new Generator(getResources(), stageLevel);
 
-        pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
-        player.weaponLevel = pref.getInt("level", 0);
-        player.coins = pref.getInt("coin", 0);
+
 
         postFrameCallback();
     }
@@ -153,13 +157,18 @@ public class GameView extends View {
                 if(m.collisionCheck(w.bounding_box)){
                     m.hitByWeapon(w.damage);
                     player.damageInStage += w.damage;
-                    if(m.hp <= 0.f)
+                    if(m.hp <= 0.f) {
                         trash_monsters.add(m);
+                        if(m.type == 2)
+                            child_monsters.addAll(generator.generateChild(m));
+                    }
                 }
             }
         }
         monsters.removeAll(trash_monsters);
         items.removeAll(trash_items);
+        monsters.addAll(child_monsters);
+        child_monsters.clear();
         trash_monsters.clear();
         trash_items.clear();
 
@@ -167,6 +176,7 @@ public class GameView extends View {
             Log.d(TAG, "Clear!");
         }
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         player.draw(canvas);

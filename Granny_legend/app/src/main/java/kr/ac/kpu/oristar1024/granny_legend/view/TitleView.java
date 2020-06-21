@@ -6,15 +6,12 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Choreographer;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import kr.ac.kpu.oristar1024.granny_legend.R;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 
 public class TitleView extends View {
@@ -24,8 +21,6 @@ public class TitleView extends View {
     int screen_width;
     int screen_height;
     private float frameTime;
-    private String TAG = TitleView.class.getSimpleName();
-
 
     public TitleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -40,19 +35,13 @@ public class TitleView extends View {
         screen_width = size.x;
         screen_height = size.y;
 
-        player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2);
-
         pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
+        int weaponLevel = pref.getInt("level", 0);
 
-        player.coins = pref.getInt("coin", 0);
-        player.weaponLevel = pref.getInt("level", 0);
-
-        Log.d(TAG, "coins : "+ player.coins);
-        Log.d(TAG, "level : " + player.weaponLevel);
+        player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2, weaponLevel);
 
         postFrameCallback();
     }
-
 
     private void postFrameCallback(){
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {

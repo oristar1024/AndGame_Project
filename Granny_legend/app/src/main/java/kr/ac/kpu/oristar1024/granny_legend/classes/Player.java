@@ -25,37 +25,30 @@ public class Player implements GameObject{
     private float itemTime = 0.f;
     private boolean itemOn = false;
     public boolean shieldItemOn = false;
-    public float coins;
-    public float weaponLevel;
+    public int weaponLevel;
     public float damageInStage;
 
 
-    public Player(Resources res, float x, float y){
+    public Player(Resources res, float x, float y, int level){
         this.x = x;
         this.y = y;
         dx = 0;
         dy = 0;
         range = 200;
         damageInStage = 0;
+        weaponLevel = level;
         bounding_box = new Rect(460, 460, 540, 540);
 
 
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.character);
         weapons = new ArrayList<>();
-        weapons.add(new Weapon(res, x, y, 0, range));
-        weapons.add(new Weapon(res, x, y, 60, range));
-        weapons.add(new Weapon(res, x, y, 120, range));
-        weapons.add(new Weapon(res, x, y, 180, range));
-        weapons.add(new Weapon(res, x, y, 240, range));
-        weapons.add(new Weapon(res, x, y, 300, range));
-    }
-
-    public void upgradeWeapon(){
-        if(coins >= weaponLevel * 20 + 180){
-            weaponLevel += 1;
-            coins -= weaponLevel * 20 + 180;
-        }
+        weapons.add(new Weapon(res, x, y, 0, range, weaponLevel));
+        weapons.add(new Weapon(res, x, y, 60, range, weaponLevel));
+        weapons.add(new Weapon(res, x, y, 120, range, weaponLevel));
+        weapons.add(new Weapon(res, x, y, 180, range, weaponLevel));
+        weapons.add(new Weapon(res, x, y, 240, range, weaponLevel));
+        weapons.add(new Weapon(res, x, y, 300, range, weaponLevel));
     }
 
     private void updateBB(){

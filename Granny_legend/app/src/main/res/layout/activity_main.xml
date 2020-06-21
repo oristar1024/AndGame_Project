@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
-        />
+         />
 
     <ImageView
         android:id="@+id/imageView"
@@ -90,6 +90,68 @@
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/buttonStage1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/locked_stage"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/levelText"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.2"
+        />
+
+    <ImageButton
+        android:id="@+id/buttonStage2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+
+        android:background="@drawable/locked_stage"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/levelText"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.35"/>
+
+    <ImageButton
+        android:id="@+id/buttonStage3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/locked_stage"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/levelText"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageButton
+        android:id="@+id/buttonStage4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/locked_stage"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/levelText"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.65"/>
+
+    <ImageButton
+        android:id="@+id/buttonStage5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/locked_stage"
+        app:layout_constraintBottom_toBottomOf="@+id/titleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/levelText"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.8"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

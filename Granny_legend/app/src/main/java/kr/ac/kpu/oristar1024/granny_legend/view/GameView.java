@@ -1,5 +1,6 @@
 package kr.ac.kpu.oristar1024.granny_legend.view;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -35,7 +36,6 @@ public class GameView extends View {
 
     int screen_width;
     int screen_height;
-    private float timeDiff;
     private float frameTime;
 
     public GameView(Context context){
@@ -67,11 +67,12 @@ public class GameView extends View {
         dy = 0;
         WindowManager wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
         Point size = new Point();
+        assert wm != null;
         wm.getDefaultDisplay().getSize(size);
         screen_width = size.x;
         screen_height = size.y;
 
-        player = new Player(getResources());
+        player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2);
         items = new ArrayList<>();
         trash_items = new ArrayList<>();
         items.add(new Item(getResources(), 100, 100, 1, 1));
@@ -85,6 +86,7 @@ public class GameView extends View {
         postFrameCallback();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -115,7 +117,7 @@ public class GameView extends View {
             frameTime = curTime;
             return;
         }
-        timeDiff = curTime - frameTime;
+        float timeDiff = curTime - frameTime;
         frameTime = curTime;
 
         player.update(timeDiff);
@@ -144,6 +146,7 @@ public class GameView extends View {
             for(Weapon w : player.weapons){
                 if(m.collisionCheck(w.bounding_box)){
                     m.hitByWeapon(w.damage);
+                    player.damageInStage += w.damage;
                     if(m.hp <= 0.f)
                         trash_monsters.add(m);
                 }

@@ -7,11 +7,13 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <kr.ac.kpu.oristar1024.granny_legend.view.GameView
-        android:id="@+id/gameView"
+    <kr.ac.kpu.oristar1024.granny_legend.view.TitleView
+        android:id="@+id/titleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"/>
+        android:background="@drawable/background"
+
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

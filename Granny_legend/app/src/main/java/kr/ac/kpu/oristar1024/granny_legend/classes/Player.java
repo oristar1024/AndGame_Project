@@ -23,14 +23,18 @@ public class Player implements GameObject{
     private float itemTime = 0.f;
     private boolean itemOn = false;
     public boolean shieldItemOn = false;
+    public float coins;
+    public float weaponLevel;
+    public float damageInStage;
 
 
-    public Player(Resources res){
-        x = 500;
-        y = 500;
+    public Player(Resources res, float x, float y){
+        this.x = x;
+        this.y = y;
         dx = 0;
         dy = 0;
         range = 200;
+        damageInStage = 0;
         bounding_box = new Rect(460, 460, 540, 540);
 
         if(bitmap == null)
@@ -42,6 +46,13 @@ public class Player implements GameObject{
         weapons.add(new Weapon(res, x, y, 180, range));
         weapons.add(new Weapon(res, x, y, 240, range));
         weapons.add(new Weapon(res, x, y, 300, range));
+    }
+
+    public void upgradeWeapon(){
+        if(coins >= weaponLevel * 20 + 180){
+            weaponLevel += 1;
+            coins -= weaponLevel * 20 + 180;
+        }
     }
 
     private void updateBB(){

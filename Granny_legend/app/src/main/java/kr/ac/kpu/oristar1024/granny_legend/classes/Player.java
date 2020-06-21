@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Player implements GameObject{
     public boolean shieldItemOn = false;
     public int weaponLevel;
     public float damageInStage;
+    private Bitmap shieldBitmap;
 
 
     public Player(Resources res, float x, float y, int level){
@@ -42,6 +44,8 @@ public class Player implements GameObject{
 
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.character);
+        if(shieldBitmap == null)
+            shieldBitmap = BitmapFactory.decodeResource(res, R.drawable.shield);
         weapons = new ArrayList<>();
         weapons.add(new Weapon(res, x, y, 0, range, weaponLevel));
         weapons.add(new Weapon(res, x, y, 60, range, weaponLevel));
@@ -126,8 +130,8 @@ public class Player implements GameObject{
 
     @Override
     public void draw(Canvas canvas) {
-        Paint boxpaint = new Paint();
-        canvas.drawRect(bounding_box, boxpaint);
+        if(shieldItemOn)
+            canvas.drawBitmap(shieldBitmap, null, new RectF(x-120, y-120, x+120, y+120), null);
         canvas.drawBitmap(bitmap, x-75, y-75, null);
         for(Weapon w : weapons){
             w.draw(canvas);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private int coins;
     private int level;
     private int openedStage;
+    private MediaPlayer mainBGM;
 
     private int[] BUTTON_IDS = {R.id.buttonStage1, R.id.buttonStage2, R.id.buttonStage3,
                                 R.id.buttonStage4, R.id.buttonStage5};
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         pref = getSharedPreferences("coin", MODE_PRIVATE);
 
 
-
+        mainBGM = MediaPlayer.create(this, R.raw.mainbgm);
+        mainBGM.start();
         coins = pref.getInt("coin", 0);
         level = pref.getInt("level", 0);
         openedStage = pref.getInt("stage", 0);
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             edit.putInt("selection", 5);
         }
         edit.commit();
+        mainBGM.stop();
         startActivity(new Intent(this, StageActivity.class));
     }
 }

@@ -10,7 +10,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.AudioManager;
 import android.media.Image;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
@@ -48,6 +51,11 @@ public class GameView extends View {
     private Generator generator;
     private boolean running = true;
     private Bitmap result;
+    private MediaPlayer stageBGM;
+    private SoundPool soundPool;
+    private int hitSound;
+    private int itemSound;
+
     SharedPreferences pref;
 
     int screen_width;
@@ -82,6 +90,13 @@ public class GameView extends View {
         tmpy = 0;
         dx = 0;
         dy = 0;
+
+        stageBGM = MediaPlayer.create(context, R.raw.stagebgm);
+        stageBGM.start();
+
+        soundPool = new SoundPool(30, AudioManager.STREAM_MUSIC, 0);
+        itemSound = soundPool.load(context, R.raw.item, 1);
+        hitSound = soundPool.load(context, R.raw.hit, 1);
 
         result = BitmapFactory.decodeResource(getResources(), R.drawable.result);
 
@@ -153,6 +168,7 @@ public class GameView extends View {
                 i.update(timeDiff);
                 i.updatedir(screen_width, screen_height);
                 if (player.collisionCheck(i.bounding_box)) {
+                    soundPool.play(itemSound, 1, 1, 0, 0, 1);
                     if (i.type == 0) {
                         player.rotSpeedItem();
                         for (Monster m : monsters)
@@ -186,6 +202,7 @@ public class GameView extends View {
                     if (m.collisionCheck(w.bounding_box)) {
                         if (m.type != 1 && m.delayTime > m.hitDelay) {
                             player.damageInStage += w.damage;
+                            soundPool.play(hitSound, 1, 1, 0, 0, 1);
                         }
                         m.hitByWeapon(w.damage);
                         if (m.hp <= 0.f) {
@@ -217,6 +234,7 @@ public class GameView extends View {
         SharedPreferences.Editor edit = pref.edit();
         edit.putInt("coin", coins + (int)(player.damageInStage / 10));
         edit.commit();
+        stageBGM.stop();
     }
 
     private void setWin(){
@@ -228,6 +246,7 @@ public class GameView extends View {
         edit.putInt("stage", stage+1);
         edit.putInt("coin", coins + (int)(player.damageInStage / 10));
         edit.commit();
+        stageBGM.stop();
     }
 
     private void drawResult(Canvas canvas){

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.view.Choreographer;
 import android.view.View;
@@ -18,7 +17,6 @@ import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 public class TitleView extends View {
     private Player player;
     private SharedPreferences pref;
-    private MediaPlayer mainBGM;
 
     int screen_width;
     int screen_height;
@@ -30,8 +28,6 @@ public class TitleView extends View {
     }
 
     private void initResources(Context context) {
-        mainBGM = MediaPlayer.create(context, android.R.raw.mainbgm);
-
         WindowManager wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
         Point size = new Point();
         assert wm != null;

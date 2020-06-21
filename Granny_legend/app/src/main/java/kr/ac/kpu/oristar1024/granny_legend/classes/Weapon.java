@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;
@@ -47,8 +46,6 @@ public class Weapon implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint bbPaint = new Paint();
-        canvas.drawRect(bounding_box, bbPaint);
         canvas.drawBitmap(bitmap, null, bounding_box, null);
     }
 

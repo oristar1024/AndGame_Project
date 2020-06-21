@@ -4,19 +4,28 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.media.Image;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Choreographer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+import kr.ac.kpu.oristar1024.granny_legend.R;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Generator;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Item;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Monster;
@@ -37,6 +46,8 @@ public class GameView extends View {
     private ArrayList<Item> items;
     private ArrayList<Item> trash_items;
     private Generator generator;
+    private boolean running = true;
+    private Bitmap result;
     SharedPreferences pref;
 
     int screen_width;
@@ -71,6 +82,9 @@ public class GameView extends View {
         tmpy = 0;
         dx = 0;
         dy = 0;
+
+        result = BitmapFactory.decodeResource(getResources(), R.drawable.result);
+
         WindowManager wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
         Point size = new Point();
         assert wm != null;
@@ -122,72 +136,106 @@ public class GameView extends View {
 
 
     public void update(long frameTimeNanos){
-        float curTime = frameTimeNanos / 1000000000.0f;
-        if(frameTime == 0){
+        if(running) {
+            float curTime = frameTimeNanos / 1000000000.0f;
+            if (frameTime == 0) {
+                frameTime = curTime;
+                return;
+            }
+            float timeDiff = curTime - frameTime;
             frameTime = curTime;
-            return;
-        }
-        float timeDiff = curTime - frameTime;
-        frameTime = curTime;
 
-        player.update(timeDiff);
-        monsters.addAll(generator.genenateMonster(timeDiff));
-        items.addAll(generator.generateItem(timeDiff));
+            player.update(timeDiff);
+            monsters.addAll(generator.genenateMonster(timeDiff));
+            items.addAll(generator.generateItem(timeDiff));
 
-        for(Item i : items){
-            i.update(timeDiff);
-            i.updatedir(screen_width, screen_height);
-            if(player.collisionCheck(i.bounding_box)){
-                if(i.type == 0){
-                    player.rotSpeedItem();
-                    for(Monster m : monsters)
-                        m.rotSpeedItem();
+            for (Item i : items) {
+                i.update(timeDiff);
+                i.updatedir(screen_width, screen_height);
+                if (player.collisionCheck(i.bounding_box)) {
+                    if (i.type == 0) {
+                        player.rotSpeedItem();
+                        for (Monster m : monsters)
+                            m.rotSpeedItem();
+                    } else if (i.type == 1)
+                        player.shieldItem();
+                    else if (i.type == 2)
+                        player.rangeItem();
+                    trash_items.add(i);
                 }
-                else if(i.type == 1)
-                    player.shieldItem();
-                else if(i.type == 2)
-                    player.rangeItem();
-                trash_items.add(i);
             }
-        }
-        for(Monster m : monsters){
-            m.update(timeDiff);
-            m.updatedir(screen_width, screen_height);
+            for (Monster m : monsters) {
+                m.update(timeDiff);
+                m.updatedir(screen_width, screen_height);
 
-            if(player.collisionCheck(m.bounding_box) && !player.shieldItemOn)
-                Log.d(TAG, "dead!");
+                if (player.collisionCheck(m.bounding_box) && !player.shieldItemOn)
+                    setDead();
 
-            if(m.canShoot){
-                bullets.addAll(generator.generateBullet(m, player.x, player.y));
-                m.canShoot = false;
-            }
-            if(m.type == 1 && m.birthTime > 8.0f)
-                trash_monsters.add(m);
+                if (m.canShoot && m.type == 3) {
+                    bullets.addAll(generator.generateBossBullet(m, player.x, player.y));
+                    m.canShoot = false;
+                }
+                if (m.canShoot) {
+                    bullets.addAll(generator.generateBullet(m, player.x, player.y));
+                    m.canShoot = false;
+                }
+                if (m.type == 1 && m.birthTime > 8.0f)
+                    trash_monsters.add(m);
 
-            for(Weapon w : player.weapons){
-                if(m.collisionCheck(w.bounding_box)){
-                    m.hitByWeapon(w.damage);
-                    player.damageInStage += w.damage;
-                    if(m.hp <= 0.f) {
-                        trash_monsters.add(m);
-                        if(m.type == 2)
-                            child_monsters.addAll(generator.generateChild(m));
+                for (Weapon w : player.weapons) {
+                    if (m.collisionCheck(w.bounding_box)) {
+                        if (m.type != 1 && m.delayTime > m.hitDelay) {
+                            player.damageInStage += w.damage;
+                        }
+                        m.hitByWeapon(w.damage);
+                        if (m.hp <= 0.f) {
+                            trash_monsters.add(m);
+                            if (m.type == 2)
+                                child_monsters.addAll(generator.generateChild(m));
+                        }
                     }
                 }
             }
-        }
-        monsters.removeAll(trash_monsters);
-        items.removeAll(trash_items);
-        monsters.addAll(child_monsters);
-        monsters.addAll(bullets);
-        bullets.clear();
-        child_monsters.clear();
-        trash_monsters.clear();
-        trash_items.clear();
+            monsters.removeAll(trash_monsters);
+            items.removeAll(trash_items);
+            monsters.addAll(child_monsters);
+            monsters.addAll(bullets);
+            bullets.clear();
+            child_monsters.clear();
+            trash_monsters.clear();
+            trash_items.clear();
 
-        if(generator.isEnd() && monsters.isEmpty()){
-            Log.d(TAG, "Clear!");
+            if (generator.isEnd() && monsters.isEmpty()) {
+                setWin();
+            }
         }
+    }
+
+    private void setDead(){
+        running = false;
+        int coins = pref.getInt("coin", 0);
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putInt("coin", coins + (int)(player.damageInStage / 10));
+        edit.commit();
+    }
+
+    private void setWin(){
+        running = false;
+        int stage = pref.getInt("stage", 0);
+        int coins = pref.getInt("coin", 0);
+
+        SharedPreferences.Editor edit = pref.edit();
+        edit.putInt("stage", stage+1);
+        edit.putInt("coin", coins + (int)(player.damageInStage / 10));
+        edit.commit();
+    }
+
+    private void drawResult(Canvas canvas){
+        Paint textPaint = new Paint();
+        textPaint.setTextSize(80);
+        textPaint.setColor(0xFFFFFFFF);
+        canvas.drawBitmap(result, null, new Rect(140, 320, 940, 820), null);
+        canvas.drawText(""+(int)(player.damageInStage / 10),520, 590, textPaint);
     }
 
     @Override
@@ -197,6 +245,8 @@ public class GameView extends View {
             i.draw(canvas);
         for(Monster m : monsters)
             m.draw(canvas);
+        if(!running)
+            drawResult(canvas);
     }
 }
 

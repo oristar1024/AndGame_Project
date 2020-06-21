@@ -17,6 +17,7 @@ public class Monster_Bullet extends Monster {
         speed = 200;
     }
 
+    @Override
     void updateBB(){
         bounding_box.left = (int)(x-30);
         bounding_box.right = (int)(x+30);

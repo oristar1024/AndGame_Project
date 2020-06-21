@@ -36,6 +36,8 @@ public class Generator {
             maxMonsterWave = 5;
         else if(stage == 4)
             maxMonsterWave = 1;
+        else if(stage == 5)
+            maxMonsterWave = 0;
     }
 
     public ArrayList<Monster> genenateMonster(float eTime){
@@ -171,6 +173,13 @@ public class Generator {
                 monsterWave++;
             }
         }
+
+        else if(stage == 5){
+            if(monsterWaveTime > 2 && monsterWave == 0){
+                monsters.add(new Monster_Boss(res, 540, 900, 0, 0, 30000));
+                monsterWave++;
+            }
+        }
         return monsters;
     }
 
@@ -196,6 +205,15 @@ public class Generator {
         float dx = x - m.x;
         float dy = y - m.y;
         monsters.add(new Monster_Bullet(res, (int)m.x, (int)m.y, dx, dy, 1));
+
+        return monsters;
+    }
+
+    public ArrayList<Monster> generateBossBullet(Monster m, float x, float y){
+        monsters.clear();
+        float dx = x - m.x;
+        float dy = y - m.y;
+        monsters.add(new Monster_Parent(res, (int)m.x, (int)m.y, dx, dy, 2000));
 
         return monsters;
     }

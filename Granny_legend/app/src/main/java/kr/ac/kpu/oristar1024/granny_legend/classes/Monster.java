@@ -15,16 +15,16 @@ public class Monster implements GameObject {
     float y;
     float speed;
     public int hp;
-    private int frame;
-    private int count;
+    int frame;
+    int count;
     public float birthTime;
-    float hitDelay = 1.f / 6;
-    float delayTime = 0.f;
+    public float hitDelay = 1.f / 6;
+    public float delayTime = 0.f;
     float rotSpeedItemDurationTime = 5.0f;
     float rotSpeedItemTime = 0.f;
     boolean rotSpeedItemOn = false;
     public Rect bounding_box;
-    private Rect srcRect;
+    Rect srcRect;
     public int type;
     public boolean canShoot;
 
@@ -58,7 +58,7 @@ public class Monster implements GameObject {
         bounding_box.top = (int)(y-100);
     }
 
-    private void updateFrame(){
+    void updateFrame(){
         count++;
         if(count == 10){
             frame = (frame+1)%2;

@@ -34,13 +34,6 @@ public class MainActivity extends AppCompatActivity {
         pref = getSharedPreferences("coin", MODE_PRIVATE);
 
 
-        SharedPreferences.Editor edit = pref.edit();
-        //edit.clear();
-        edit.putInt("coin", 1000);
-        edit.putInt("level", 5);
-        edit.putInt("stage", 5);
-        edit.putInt("selection", 0);
-        edit.commit();
 
         coins = pref.getInt("coin", 0);
         level = pref.getInt("level", 0);
@@ -103,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             edit.putInt("selection", 5);
         }
         edit.commit();
-        Log.d(TAG, "stage : " + pref.getInt("selection", 0));
         startActivity(new Intent(this, StageActivity.class));
     }
 }

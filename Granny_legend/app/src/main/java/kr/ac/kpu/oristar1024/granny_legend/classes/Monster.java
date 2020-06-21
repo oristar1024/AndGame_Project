@@ -17,7 +17,7 @@ public class Monster implements GameObject {
     public int hp;
     private int frame;
     private int count;
-    float birthTime;
+    public float birthTime;
     float hitDelay = 1.f / 6;
     float delayTime = 0.f;
     float rotSpeedItemDurationTime = 5.0f;
@@ -26,6 +26,7 @@ public class Monster implements GameObject {
     public Rect bounding_box;
     private Rect srcRect;
     public int type;
+    public boolean canShoot;
 
 
     Bitmap bitmap;
@@ -47,6 +48,7 @@ public class Monster implements GameObject {
         this.hp = hp;
         birthTime = 0.f;
         type = 0;
+        canShoot = false;
     }
 
     void updateBB(){

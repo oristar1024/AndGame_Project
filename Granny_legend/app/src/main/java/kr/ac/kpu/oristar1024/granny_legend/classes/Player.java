@@ -16,7 +16,7 @@ import kr.ac.kpu.oristar1024.granny_legend.R;
 
 public class Player implements GameObject{
     private Bitmap bitmap;
-    private float x, y;
+    public float x, y;
     private float dx, dy;
     private float range;
     public ArrayList<Weapon> weapons;
@@ -92,6 +92,16 @@ public class Player implements GameObject{
         y += dy;
         dx = 0;
         dy = 0;
+
+        if(x > 1030)
+            x = 1030;
+        if(x < 50)
+            x = 50;
+        if (y > 1700)
+            y = 1700;
+        if (y < 50)
+            y = 50;
+
         updateBB();
         if(itemOn){
             itemTime += eTime;

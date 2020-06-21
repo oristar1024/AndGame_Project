@@ -33,6 +33,7 @@ public class GameView extends View {
     private ArrayList<Monster> monsters;
     private ArrayList<Monster> trash_monsters;
     private ArrayList<Monster> child_monsters;
+    private ArrayList<Monster> bullets;
     private ArrayList<Item> items;
     private ArrayList<Item> trash_items;
     private Generator generator;
@@ -86,6 +87,7 @@ public class GameView extends View {
         trash_items = new ArrayList<>();
         trash_monsters = new ArrayList<>();
         child_monsters = new ArrayList<>();
+        bullets = new ArrayList<>();
         monsters = new ArrayList<>();
         generator = new Generator(getResources(), stageLevel);
 
@@ -151,8 +153,17 @@ public class GameView extends View {
         for(Monster m : monsters){
             m.update(timeDiff);
             m.updatedir(screen_width, screen_height);
+
             if(player.collisionCheck(m.bounding_box) && !player.shieldItemOn)
                 Log.d(TAG, "dead!");
+
+            if(m.canShoot){
+                bullets.addAll(generator.generateBullet(m, player.x, player.y));
+                m.canShoot = false;
+            }
+            if(m.type == 1 && m.birthTime > 8.0f)
+                trash_monsters.add(m);
+
             for(Weapon w : player.weapons){
                 if(m.collisionCheck(w.bounding_box)){
                     m.hitByWeapon(w.damage);
@@ -168,6 +179,8 @@ public class GameView extends View {
         monsters.removeAll(trash_monsters);
         items.removeAll(trash_items);
         monsters.addAll(child_monsters);
+        monsters.addAll(bullets);
+        bullets.clear();
         child_monsters.clear();
         trash_monsters.clear();
         trash_items.clear();

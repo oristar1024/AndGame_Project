@@ -32,8 +32,10 @@ public class Generator {
         random = new Random();
         this.res = res;
 
-        if(stage == 1)
+        if(stage < 4)
             maxMonsterWave = 5;
+        else if(stage == 4)
+            maxMonsterWave = 1;
     }
 
     public ArrayList<Monster> genenateMonster(float eTime){
@@ -151,6 +153,24 @@ public class Generator {
                 monsterWaveTime -= 7;
             }
         }
+
+        else if(stage == 4){
+            if(monsterWaveTime > 2 && monsterWave == 0) {
+                monsters.add(new Monster_Shooter(res, 300, 300, 0, 1, 3000));
+                monsters.add(new Monster_Shooter(res, 780, 300, 0, 1, 3000));
+                monsters.add(new Monster_Shooter(res, 300, 1600, 0, 1, 3000));
+                monsters.add(new Monster_Shooter(res, 780, 1600, 0, 1, 3000));
+                monsterWaveTime -= 2;
+                monsterWave++;
+            }
+            else if(monsterWaveTime > 15 && monsterWave == 1) {
+                monsters.add(new Monster_Shooter(res, 540, 300, 1, 0, 3000));
+                monsters.add(new Monster_Shooter(res, 540, 1600, 1, 0, 3000));
+                monsters.add(new Monster_Shooter(res, 300, 900, 1, 0, 3000));
+                monsters.add(new Monster_Shooter(res, 780, 900, 0, 1, 3000));
+                monsterWave++;
+            }
+        }
         return monsters;
     }
 
@@ -167,6 +187,15 @@ public class Generator {
         dx = random.nextInt(10);
         dy = random.nextInt(10);
         monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+
+        return monsters;
+    }
+
+    public ArrayList<Monster> generateBullet(Monster m, float x, float y){
+        monsters.clear();
+        float dx = x - m.x;
+        float dy = y - m.y;
+        monsters.add(new Monster_Bullet(res, (int)m.x, (int)m.y, dx, dy, 1));
 
         return monsters;
     }

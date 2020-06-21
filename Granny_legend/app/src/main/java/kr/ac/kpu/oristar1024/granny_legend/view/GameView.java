@@ -237,7 +237,8 @@ public class GameView extends View {
         int coins = pref.getInt("coin", 0);
 
         SharedPreferences.Editor edit = pref.edit();
-        edit.putInt("stage", stage+1);
+        if(stage < 5)
+            edit.putInt("stage", stage+1);
         edit.putInt("coin", coins + (int)(player.damageInStage / 10));
         edit.commit();
         stageBGM.stop();

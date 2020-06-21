@@ -16,7 +16,6 @@ import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 
 public class TitleView extends View {
     private Player player;
-    private SharedPreferences pref;
 
     int screen_width;
     int screen_height;
@@ -35,7 +34,7 @@ public class TitleView extends View {
         screen_width = size.x;
         screen_height = size.y;
 
-        pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
+        SharedPreferences pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
         int weaponLevel = pref.getInt("level", 0);
 
         player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2, weaponLevel);

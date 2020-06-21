@@ -3,7 +3,6 @@ package kr.ac.kpu.oristar1024.granny_legend.classes;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;

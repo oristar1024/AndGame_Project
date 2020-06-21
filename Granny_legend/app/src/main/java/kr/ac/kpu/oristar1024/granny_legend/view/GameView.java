@@ -11,18 +11,13 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Choreographer;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -36,7 +31,6 @@ import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Weapon;
 
 public class GameView extends View {
-    private final static String TAG = GameView.class.getSimpleName();
     private float dx;
     private float dy;
     private float tmpx;

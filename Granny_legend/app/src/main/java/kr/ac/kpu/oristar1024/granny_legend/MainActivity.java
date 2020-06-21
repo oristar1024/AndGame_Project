@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,17 +26,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView coinText;
     private TextView levelText;
     private TextView priceText;
-    private String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pref = getSharedPreferences("coin", MODE_PRIVATE);
-
 
         mainBGM = MediaPlayer.create(this, R.raw.mainbgm);
         mainBGM.start();
+
+        pref = getSharedPreferences("coin", MODE_PRIVATE);
         coins = pref.getInt("coin", 0);
         level = pref.getInt("level", 0);
         openedStage = pref.getInt("stage", 0);

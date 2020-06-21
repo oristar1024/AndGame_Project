@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
@@ -21,12 +20,12 @@ public class Player implements GameObject{
     private float dx, dy;
     private float range;
     public ArrayList<Weapon> weapons;
-    public Rect bounding_box;
+    private Rect bounding_box;
     private float itemDurationTime = 5.0f;
     private float itemTime = 0.f;
     private boolean itemOn = false;
     public boolean shieldItemOn = false;
-    public int weaponLevel;
+    private int weaponLevel;
     public float damageInStage;
     private Bitmap shieldBitmap;
 

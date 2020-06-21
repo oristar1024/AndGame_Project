@@ -8,9 +8,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+
 import java.util.ArrayList;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;
+
 
 public class Player implements GameObject{
     private Bitmap bitmap;
@@ -36,6 +38,7 @@ public class Player implements GameObject{
         range = 200;
         damageInStage = 0;
         bounding_box = new Rect(460, 460, 540, 540);
+
 
         if(bitmap == null)
             bitmap = BitmapFactory.decodeResource(res, R.drawable.character);

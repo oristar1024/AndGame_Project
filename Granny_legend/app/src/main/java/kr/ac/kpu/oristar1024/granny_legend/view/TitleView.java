@@ -2,31 +2,37 @@ package kr.ac.kpu.oristar1024.granny_legend.view;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Choreographer;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import kr.ac.kpu.oristar1024.granny_legend.R;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 
 public class TitleView extends View {
     private Player player;
+    private SharedPreferences pref;
 
     int screen_width;
     int screen_height;
     private float frameTime;
+    private String TAG = TitleView.class.getSimpleName();
 
 
     public TitleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initResources();
+        initResources(context);
     }
 
-    private void initResources() {
+    private void initResources(Context context) {
         WindowManager wm = (WindowManager) getContext().getSystemService(Service.WINDOW_SERVICE);
         Point size = new Point();
         assert wm != null;
@@ -36,8 +42,17 @@ public class TitleView extends View {
 
         player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2);
 
+        pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
+
+        player.coins = pref.getInt("coin", 0);
+        player.weaponLevel = pref.getInt("level", 0);
+
+        Log.d(TAG, "coins : "+ player.coins);
+        Log.d(TAG, "level : " + player.weaponLevel);
+
         postFrameCallback();
     }
+
 
     private void postFrameCallback(){
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {

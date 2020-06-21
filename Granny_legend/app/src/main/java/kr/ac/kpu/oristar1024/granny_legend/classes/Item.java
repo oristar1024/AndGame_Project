@@ -17,7 +17,6 @@ public class Item implements GameObject {
     private float speed;
     public int type;
     public Rect bounding_box;
-    private float birthTime;
 
     public Item(Resources res, int x, int y, float dx, float dy) {
         type = new Random().nextInt(3);
@@ -35,7 +34,7 @@ public class Item implements GameObject {
         float dist = (float)(Math.sqrt(dx * dx + dy * dy));
         this.dx = this.dx / dist;
         this.dy = this.dy / dist;
-        speed = 900;
+        speed = 750;
     }
 
     private void updateBB(){
@@ -46,33 +45,30 @@ public class Item implements GameObject {
     }
 
     public void updatedir(int screen_width, int screen_height){
-        if(birthTime < 2.0f)
-            return;
         if( bounding_box.left < 0) {
             dx = -dx;
-            x = 101;
+            x = 51;
             updateBB();
         }
         if(bounding_box.right> screen_width) {
             dx = -dx;
-            x = screen_width - 101;
+            x = screen_width - 51;
             updateBB();
         }
         if(bounding_box.top < 0) {
             dy = -dy;
-            y = 101;
+            y = 51;
             updateBB();
         }
         if (bounding_box.bottom > screen_height){
             dy = -dy;
-            y = screen_height - 101;
+            y = screen_height - 51;
             updateBB();
         }
     }
 
     @Override
     public void update(float eTime) {
-        birthTime += eTime;
         x = x + dx * speed * eTime;
         y = y + dy * speed * eTime;
         updateBB();

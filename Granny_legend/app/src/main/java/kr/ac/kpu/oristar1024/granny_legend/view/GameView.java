@@ -3,6 +3,7 @@ package kr.ac.kpu.oristar1024.granny_legend.view;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
@@ -16,14 +17,14 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-import kr.ac.kpu.oristar1024.granny_legend.MainActivity;
+import kr.ac.kpu.oristar1024.granny_legend.classes.Generator;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Item;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Monster;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Player;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Weapon;
 
 public class GameView extends View {
-    private final static String TAG = MainActivity.class.getSimpleName();
+    private final static String TAG = GameView.class.getSimpleName();
     private float dx;
     private float dy;
     private float tmpx;
@@ -33,6 +34,8 @@ public class GameView extends View {
     private ArrayList<Monster> trash_monsters;
     private ArrayList<Item> items;
     private ArrayList<Item> trash_items;
+    private Generator generator;
+    SharedPreferences pref;
 
     int screen_width;
     int screen_height;
@@ -40,14 +43,15 @@ public class GameView extends View {
 
     public GameView(Context context){
         super(context);
-        initResources();
+        initResources(context);
     }
 
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initResources();
+        initResources(context);
     }
+
 
     private void postFrameCallback(){
         Choreographer.getInstance().postFrameCallback(new Choreographer.FrameCallback() {
@@ -60,7 +64,7 @@ public class GameView extends View {
         });
     }
 
-    private void initResources() {
+    private void initResources(Context context) {
         tmpx = 0;
         tmpy = 0;
         dx = 0;
@@ -75,13 +79,13 @@ public class GameView extends View {
         player = new Player(getResources(), (float)screen_width/2, (float)screen_height/2);
         items = new ArrayList<>();
         trash_items = new ArrayList<>();
-        items.add(new Item(getResources(), 100, 100, 1, 1));
-        items.add(new Item(getResources(), 500, 500, -1, -1));
-
         trash_monsters = new ArrayList<>();
         monsters = new ArrayList<>();
-        monsters.add(new Monster(getResources(), 300, 0, 0,1, 3000));
-        monsters.add(new Monster(getResources(),500, 0, 0, 1, 3000));
+        generator = new Generator(getResources(), 1);
+
+        pref = context.getSharedPreferences("coin", Context.MODE_PRIVATE);
+        player.weaponLevel = pref.getInt("level", 0);
+        player.coins = pref.getInt("coin", 0);
 
         postFrameCallback();
     }
@@ -121,6 +125,8 @@ public class GameView extends View {
         frameTime = curTime;
 
         player.update(timeDiff);
+        monsters.addAll(generator.genenateMonster(timeDiff));
+        items.addAll(generator.generateItem(timeDiff));
 
         for(Item i : items){
             i.update(timeDiff);
@@ -156,6 +162,10 @@ public class GameView extends View {
         items.removeAll(trash_items);
         trash_monsters.clear();
         trash_items.clear();
+
+        if(generator.isEnd() && monsters.isEmpty()){
+            Log.d(TAG, "Clear!");
+        }
     }
     @Override
     protected void onDraw(Canvas canvas) {

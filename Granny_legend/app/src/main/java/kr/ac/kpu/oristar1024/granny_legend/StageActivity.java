@@ -1,5 +1,4 @@
 package kr.ac.kpu.oristar1024.granny_legend;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +12,6 @@ public class StageActivity extends AppCompatActivity {
     }
 
     public void changeIntoMain(View view) {
-        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

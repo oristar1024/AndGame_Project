@@ -35,10 +35,17 @@ public class MainActivity extends AppCompatActivity {
         mainBGM = MediaPlayer.create(this, R.raw.mainbgm);
         mainBGM.start();
 
+
+
         pref = getSharedPreferences("coin", MODE_PRIVATE);
         coins = pref.getInt("coin", 0);
         level = pref.getInt("level", 0);
         openedStage = pref.getInt("stage", 0);
+
+        if(level < 1)
+            level = 1;
+        if(openedStage < 1)
+            openedStage = 1;
 
         for(int i = 0; i < 5; ++i){
             ImageButton button = findViewById(BUTTON_IDS[i]);
@@ -60,6 +67,49 @@ public class MainActivity extends AppCompatActivity {
         priceText.setText(""+(150+level*50));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        coins = pref.getInt("coin", 0);
+        level = pref.getInt("level", 0);
+        openedStage = pref.getInt("stage", 0);
+
+        if(level < 1)
+            level = 1;
+        if(openedStage < 1)
+            openedStage = 1;
+
+        for(int i = 0; i < 5; ++i){
+            ImageButton button = findViewById(BUTTON_IDS[i]);
+            if(i < openedStage) {
+                button.setEnabled(true);
+                button.setBackgroundResource(IMAGE_RES_IDS[i]);
+            }
+            else{
+                button.setEnabled(false);
+            }
+        }
+
+        if(level < 1)
+            level = 1;
+        if(openedStage < 1)
+            openedStage = 1;
+
+        for(int i = 0; i < 5; ++i){
+            ImageButton button = findViewById(BUTTON_IDS[i]);
+            if(i < openedStage) {
+                button.setEnabled(true);
+                button.setBackgroundResource(IMAGE_RES_IDS[i]);
+            }
+            else{
+                button.setEnabled(false);
+            }
+        }
+
+        coinText.setText(""+coins);
+        levelText.setText("[level : "+ level +"] \n Atk : "+(40+level*5));
+        priceText.setText(""+(150+level*50));
+    }
 
     public void upgradeLevel(View view) {
         if(coins >= 150+level*50){

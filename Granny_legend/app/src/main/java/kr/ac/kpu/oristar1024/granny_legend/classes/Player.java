@@ -20,7 +20,7 @@ public class Player implements GameObject{
     private float dx, dy;
     private float range;
     public ArrayList<Weapon> weapons;
-    private Rect bounding_box;
+    Rect bounding_box;
     private float itemDurationTime = 5.0f;
     private float itemTime = 0.f;
     private boolean itemOn = false;
@@ -135,6 +135,8 @@ public class Player implements GameObject{
         for(Weapon w : weapons){
             w.draw(canvas);
         }
+
+        CollisionDebugger.draw(canvas, this);
     }
 
     @Override

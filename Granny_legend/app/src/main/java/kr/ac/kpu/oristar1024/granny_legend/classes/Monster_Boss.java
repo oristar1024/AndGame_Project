@@ -72,5 +72,7 @@ public class Monster_Boss extends Monster {
         canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
         canvas.drawText(" "+hp, x-80, y-40, txtPaint);
         updateFrame();
+
+        CollisionDebugger.draw(canvas, this);
     }
 }

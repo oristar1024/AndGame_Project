@@ -47,6 +47,7 @@ public class Weapon implements GameObject {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, null, bounding_box, null);
+        CollisionDebugger.draw(canvas, this);
     }
 
     @Override

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import kr.ac.kpu.oristar1024.granny_legend.classes.CollisionDebugger;
+
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences pref;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CollisionDebugger.showsArea = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

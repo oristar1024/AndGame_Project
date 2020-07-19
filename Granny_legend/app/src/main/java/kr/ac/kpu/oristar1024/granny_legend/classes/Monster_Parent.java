@@ -11,4 +11,9 @@ public class Monster_Parent extends Monster {
         bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_parent);
         type = 2;
     }
+
+    @Override
+    public float getRadius() {
+        return (float) (super.getRadius() * 0.65);
+    }
 }

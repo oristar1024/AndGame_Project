@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;
+import kr.ac.kpu.oristar1024.granny_legend.classes.CollisionHelper;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Generator;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Item;
 import kr.ac.kpu.oristar1024.granny_legend.classes.Monster;
@@ -178,7 +179,7 @@ public class GameView extends View {
                 m.update(timeDiff);
                 m.updatedir(screen_width, screen_height);
 
-                if (player.collisionCheck(m.bounding_box) && !player.shieldItemOn)
+                if (CollisionHelper.collides(player, m) && !player.shieldItemOn)
                     setDead();
 
                 if (m.canShoot && m.type == 3) {

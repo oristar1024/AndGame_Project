@@ -185,17 +185,14 @@ public class Generator {
 
     public ArrayList<Monster> generateChild(Monster m){
         monsters.clear();
-        float dx = random.nextInt(10);
-        float dy = random.nextInt(10);
-        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+        int sx = m.dx > 0 ? 1 : -1;
+        int sy = m.dy > 0 ? 1 : -1;
 
-        dx = random.nextInt(10);
-        dy = random.nextInt(10);
-        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
-
-        dx = random.nextInt(10);
-        dy = random.nextInt(10);
-        monsters.add(new Monster_child(res, (int)m.x, (int)m.y, dx, dy, 300));
+        for (int i = 0; i < 3; i++) {
+            float dx = random.nextInt(10) * sx;
+            float dy = random.nextInt(10) * sy;
+            monsters.add(new Monster_child(res, (int) m.x, (int) m.y, dx, dy, 300));
+        }
 
         return monsters;
     }

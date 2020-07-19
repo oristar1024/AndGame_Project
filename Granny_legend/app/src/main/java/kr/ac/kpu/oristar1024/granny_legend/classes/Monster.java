@@ -30,7 +30,6 @@ public class Monster implements GameObject, DistanceCollidable {
     public int type;
     public boolean canShoot;
 
-
     Bitmap bitmap;
     int frameWidth;
 
@@ -130,15 +129,28 @@ public class Monster implements GameObject, DistanceCollidable {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint txtPaint = new Paint();
-        txtPaint.setColor(0xFFCC0000);
-        txtPaint.setTextSize(60);
         canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
-        canvas.drawText(" "+hp, x-80, y-40, txtPaint);
+        drawLife(canvas);
         updateFrame();
 
         CollisionDebugger.draw(canvas, this);
     }
+
+    private Paint lifePaint;
+    protected float lifeOffsetY;
+    protected void drawLife(Canvas canvas) {
+        if (lifePaint == null) {
+            lifePaint = new Paint();
+            lifePaint.setColor(0xFFCC0000);
+            lifePaint.setTextSize(60);
+            lifePaint.setTextAlign(Paint.Align.CENTER);
+
+            lifeOffsetY = bounding_box.height() / 4;
+            Log.d("Monster", "LifeOffset=" + lifeOffsetY + " obj:" + this);
+        }
+        canvas.drawText(String.valueOf(hp), x, y - lifeOffsetY, lifePaint);
+    }
+
 
     @Override
     public boolean collisionCheck(Rect other) {

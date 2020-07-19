@@ -41,11 +41,8 @@ public class Monster_Shooter extends Monster {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint txtPaint = new Paint();
-        txtPaint.setColor(0xFFCC0000);
-        txtPaint.setTextSize(60);
         canvas.drawBitmap(bitmap, null, bounding_box, null);
-        canvas.drawText(" "+hp, x-80, y-40, txtPaint);
+        drawLife(canvas);
 
         CollisionDebugger.draw(canvas, this);
     }

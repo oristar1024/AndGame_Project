@@ -69,11 +69,8 @@ public class Monster_Boss extends Monster {
 
     @Override
     public void draw(Canvas canvas) {
-        Paint txtPaint = new Paint();
-        txtPaint.setColor(0xFF0000CC);
-        txtPaint.setTextSize(60);
         canvas.drawBitmap(bitmap, srcRect, bounding_box, null);
-        canvas.drawText(" "+hp, x-80, y-40, txtPaint);
+        drawLife(canvas);
         updateFrame();
 
         CollisionDebugger.draw(canvas, this);

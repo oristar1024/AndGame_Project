@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CollisionDebugger.showsArea = true;
+//        CollisionDebugger.showsArea = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         if(openedStage < 1)
             openedStage = 1;
 
-        openedStage = 5;
+//        openedStage = 5;
 
         for(int i = 0; i < 5; ++i){
             ImageButton button = findViewById(BUTTON_IDS[i]);

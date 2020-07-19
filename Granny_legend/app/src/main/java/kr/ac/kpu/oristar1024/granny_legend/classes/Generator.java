@@ -1,6 +1,9 @@
 package kr.ac.kpu.oristar1024.granny_legend.classes;
 
 import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -255,5 +258,19 @@ public class Generator {
 
     public boolean isEnd(){
         return monsterWave > maxMonsterWave;
+    }
+
+    Paint textPaint;
+    public void drawWave(Canvas canvas) {
+        if (textPaint == null) {
+            textPaint = new Paint();
+            textPaint.setColor(Color.BLACK);
+            textPaint.setTextSize(50);
+        }
+        int max = maxMonsterWave;
+        if (max < monsterWave) {
+            max = monsterWave;
+        }
+        canvas.drawText("Wave: " + monsterWave + " / " + max, 50, 50, textPaint);
     }
 }

@@ -262,6 +262,8 @@ public class GameView extends View {
             m.draw(canvas);
         if(!running)
             drawResult(canvas);
+
+        generator.drawWave(canvas);
     }
 }
 

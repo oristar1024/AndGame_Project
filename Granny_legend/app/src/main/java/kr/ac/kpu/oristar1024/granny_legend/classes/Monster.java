@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
 public class Monster implements GameObject, DistanceCollidable {
@@ -30,14 +32,18 @@ public class Monster implements GameObject, DistanceCollidable {
 
 
     Bitmap bitmap;
+    int frameWidth;
 
     Monster(Resources res, int x, int y, float dx, float dy, int hp){
-        if(bitmap == null)
+        if(bitmap == null) {
             bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_normal);
+            frameWidth = bitmap.getWidth() / 2;
+        }
         frame = 0;
         this.x = x;
         this.y = y;
         bounding_box = new Rect(x-100, y-100, x+100, y+100);
+        Log.d("Monster", "Image size = " + bitmap.getWidth() + "," + bitmap.getHeight());
         srcRect = new Rect(0, 0, 200, 200);
         this.dx = dx;
         this.dy = dy;
@@ -64,8 +70,8 @@ public class Monster implements GameObject, DistanceCollidable {
             frame = (frame+1)%2;
             count = 0;
         }
-        srcRect.left = frame * 200;
-        srcRect.right = srcRect.left + 200;
+        srcRect.left = frame * frameWidth;
+        srcRect.right = srcRect.left + frameWidth;
     }
 
     public void updatedir(int screen_width, int screen_height){

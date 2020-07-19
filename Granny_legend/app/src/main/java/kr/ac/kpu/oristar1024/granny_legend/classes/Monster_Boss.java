@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
@@ -17,6 +18,8 @@ public class Monster_Boss extends Monster {
     Monster_Boss(Resources res, int x, int y, float dx, float dy, int hp) {
         super(res, x, y, dx, dy, hp);
         bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_boss);
+        frameWidth = bitmap.getWidth() / 2;
+//        Log.d("Monster_Boss", "Image size = " + bitmap.getWidth() + "," + bitmap.getHeight());
         bounding_box = new Rect(x-150, y-150, x+150, y+150);
         type = 3;
         srcRect.bottom = 450;
@@ -60,8 +63,8 @@ public class Monster_Boss extends Monster {
             frame = (frame+1)%2;
             count = 0;
         }
-        srcRect.left = frame * 350;
-        srcRect.right = srcRect.left + 350;
+        srcRect.left = frame * frameWidth;
+        srcRect.right = srcRect.left + frameWidth;
     }
 
     @Override

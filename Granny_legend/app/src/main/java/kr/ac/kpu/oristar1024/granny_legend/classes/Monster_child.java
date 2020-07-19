@@ -3,6 +3,7 @@ package kr.ac.kpu.oristar1024.granny_legend.classes;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Log;
 
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
@@ -10,6 +11,8 @@ public class Monster_child extends Monster {
     Monster_child(Resources res, int x, int y, float dx, float dy, int hp) {
         super(res, x, y, dx, dy, hp);
         bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_parent);
+        frameWidth = bitmap.getWidth() / 2;
+//        Log.d("Monster_child", "Image size = " + bitmap.getWidth() + "," + bitmap.getHeight());
         type = 3;
         bounding_box = new Rect(x-60, y-60, x+60, y+60);
     }

@@ -13,6 +13,7 @@ public class Monster_Shooter extends Monster {
     Monster_Shooter(Resources res, int x, int y, float dx, float dy, int hp) {
         super(res, x, y, dx, dy, hp);
         bitmap = BitmapFactory.decodeResource(res, R.drawable.monster_shooter);
+//        frameWidth = bitmap.getWidth() / 2;
     }
 
     @Override

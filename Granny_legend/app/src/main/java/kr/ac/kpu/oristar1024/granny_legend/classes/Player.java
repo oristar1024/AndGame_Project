@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
 
-public class Player implements GameObject{
+public class Player implements GameObject, DistanceCollidable {
     private Bitmap bitmap;
     public float x, y;
     private float dx, dy;
@@ -150,5 +150,20 @@ public class Player implements GameObject{
         if (bounding_box.bottom < other.top)
             return false;
         return true;
+    }
+
+    @Override
+    public float getLocationX() {
+        return x;
+    }
+
+    @Override
+    public float getLocationY() {
+        return y;
+    }
+
+    @Override
+    public float getRadius() {
+        return 70;
     }
 }

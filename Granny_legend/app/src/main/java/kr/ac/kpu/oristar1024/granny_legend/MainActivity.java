@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             level = 1;
         if(openedStage < 1)
             openedStage = 1;
+
+        openedStage = 5;
 
         for(int i = 0; i < 5; ++i){
             ImageButton button = findViewById(BUTTON_IDS[i]);
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             level = 1;
         if(openedStage < 1)
             openedStage = 1;
+        openedStage = 5;
 
         for(int i = 0; i < 5; ++i){
             ImageButton button = findViewById(BUTTON_IDS[i]);
@@ -133,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void chooseStage(View view) {
         int buttonID = view.getId();
+        Log.d("Main", "chosen: " + buttonID);
         SharedPreferences.Editor edit = pref.edit();
         if(buttonID == R.id.buttonStage1){
             edit.putInt("selection", 1);

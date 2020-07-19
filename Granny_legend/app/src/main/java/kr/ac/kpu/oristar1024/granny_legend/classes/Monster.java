@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import kr.ac.kpu.oristar1024.granny_legend.R;
 
-public class Monster implements GameObject {
+public class Monster implements GameObject, DistanceCollidable {
     float dx;
     float dy;
     float x;
@@ -147,4 +147,18 @@ public class Monster implements GameObject {
         return true;
     }
 
+    @Override
+    public float getLocationX() {
+        return x;
+    }
+
+    @Override
+    public float getLocationY() {
+        return y;
+    }
+
+    @Override
+    public float getRadius() {
+        return bounding_box.width() / 2;
+    }
 }

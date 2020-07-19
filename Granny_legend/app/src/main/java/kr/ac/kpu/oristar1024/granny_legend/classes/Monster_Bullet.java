@@ -32,5 +32,6 @@ public class Monster_Bullet extends Monster {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, null, bounding_box, null);
+        CollisionDebugger.draw(canvas, this);
     }
 }

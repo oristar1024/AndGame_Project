@@ -45,6 +45,8 @@ public class Monster_Shooter extends Monster {
         txtPaint.setTextSize(60);
         canvas.drawBitmap(bitmap, null, bounding_box, null);
         canvas.drawText(" "+hp, x-80, y-40, txtPaint);
+
+        CollisionDebugger.draw(canvas, this);
     }
 
 }

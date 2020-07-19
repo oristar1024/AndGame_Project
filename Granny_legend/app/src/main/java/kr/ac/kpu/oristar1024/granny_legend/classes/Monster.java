@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -16,7 +17,7 @@ public class Monster implements GameObject, DistanceCollidable {
     float x;
     float y;
     float speed;
-    public int hp;
+    public int hp, maxHp;
     int frame;
     int count;
     public float birthTime;
@@ -50,6 +51,7 @@ public class Monster implements GameObject, DistanceCollidable {
         this.dx = this.dx / dist;
         this.dy = this.dy / dist;
         speed = 400;
+        this.maxHp = hp;
         this.hp = hp;
         birthTime = 0.f;
         type = 0;
@@ -136,7 +138,7 @@ public class Monster implements GameObject, DistanceCollidable {
         CollisionDebugger.draw(canvas, this);
     }
 
-    private Paint lifePaint;
+    private Paint lifePaint, lifeGaugeFgPaint, lifeGaugeBgPaint;
     protected float lifeOffsetY;
     protected void drawLife(Canvas canvas) {
         if (lifePaint == null) {
@@ -146,9 +148,21 @@ public class Monster implements GameObject, DistanceCollidable {
             lifePaint.setTextAlign(Paint.Align.CENTER);
 
             lifeOffsetY = bounding_box.height() / 4;
-            Log.d("Monster", "LifeOffset=" + lifeOffsetY + " obj:" + this);
+//            Log.d("Monster", "LifeOffset=" + lifeOffsetY + " obj:" + this);
+
+            lifeGaugeBgPaint = new Paint();
+            lifeGaugeFgPaint = new Paint();
+            lifeGaugeBgPaint.setColor(0x7F000000);
+            lifeGaugeFgPaint.setColor(0x7FFFFFFF);
         }
         canvas.drawText(String.valueOf(hp), x, y - lifeOffsetY, lifePaint);
+
+        final int HEIGHT = 20, BORDER = 5;
+        float unit = getRadius() * 8 / 10;
+        float width = (2 * (unit - BORDER)) * hp / maxHp;
+        canvas.drawRect(x - unit, y + unit, x + unit, y + unit + HEIGHT, lifeGaugeBgPaint);
+        float gx = x - unit + BORDER;
+        canvas.drawRect(gx, y + unit + BORDER, gx + width, y + unit + HEIGHT - BORDER, lifeGaugeFgPaint);
     }
 
 

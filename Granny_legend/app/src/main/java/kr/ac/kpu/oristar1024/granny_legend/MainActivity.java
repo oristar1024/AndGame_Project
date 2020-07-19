@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             level = 1;
         if(openedStage < 1)
             openedStage = 1;
-        openedStage = 5;
+//        openedStage = 5;
 
         for(int i = 0; i < 5; ++i){
             ImageButton button = findViewById(BUTTON_IDS[i]);

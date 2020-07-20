@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int[] BUTTON_IDS = {R.id.buttonStage1, R.id.buttonStage2, R.id.buttonStage3,
                                 R.id.buttonStage4, R.id.buttonStage5};
-    private int[] IMAGE_RES_IDS = {R.drawable.stage1, R.drawable.stage2, R.drawable.stage3,
-                                    R.drawable.stage4, R.drawable.boss_stage};
 
     private TextView coinText;
     private TextView levelText;
@@ -39,78 +37,21 @@ public class MainActivity extends AppCompatActivity {
         mainBGM = MediaPlayer.create(this, R.raw.mainbgm);
         mainBGM.start();
 
-
-
         pref = getSharedPreferences("coin", MODE_PRIVATE);
-        coins = pref.getInt("coin", 0);
-        level = pref.getInt("level", 0);
-        openedStage = pref.getInt("stage", 0);
-
-        if(level < 1)
-            level = 1;
-        if(openedStage < 1)
-            openedStage = 1;
-
-//        openedStage = 5;
-
-        for(int i = 0; i < 5; ++i){
-            ImageButton button = findViewById(BUTTON_IDS[i]);
-            if(i < openedStage) {
-                button.setEnabled(true);
-                button.setBackgroundResource(IMAGE_RES_IDS[i]);
-            }
-            else{
-                button.setEnabled(false);
-            }
-        }
-
         coinText = findViewById(R.id.coinText);
         levelText = findViewById(R.id.levelText);
         priceText = findViewById(R.id.priceText);
-
-        coinText.setText(""+coins);
-        levelText.setText("[level : "+ level +"] \n Atk : "+(40+level*5));
-        priceText.setText(""+(150+level*50));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         coins = pref.getInt("coin", 0);
-        level = pref.getInt("level", 0);
-        openedStage = pref.getInt("stage", 0);
+        level = pref.getInt("level", 1);
+        openedStage = pref.getInt("stage", 1);
 
-        if(level < 1)
-            level = 1;
-        if(openedStage < 1)
-            openedStage = 1;
-
-        for(int i = 0; i < 5; ++i){
-            ImageButton button = findViewById(BUTTON_IDS[i]);
-            if(i < openedStage) {
-                button.setEnabled(true);
-                button.setBackgroundResource(IMAGE_RES_IDS[i]);
-            }
-            else{
-                button.setEnabled(false);
-            }
-        }
-
-        if(level < 1)
-            level = 1;
-        if(openedStage < 1)
-            openedStage = 1;
-//        openedStage = 5;
-
-        for(int i = 0; i < 5; ++i){
-            ImageButton button = findViewById(BUTTON_IDS[i]);
-            if(i < openedStage) {
-                button.setEnabled(true);
-                button.setBackgroundResource(IMAGE_RES_IDS[i]);
-            }
-            else{
-                button.setEnabled(false);
-            }
+        for (int i = 0; i < 5; ++i){
+            findViewById(BUTTON_IDS[i]).setEnabled(i < openedStage);
         }
 
         coinText.setText(""+coins);
